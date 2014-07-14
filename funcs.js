@@ -1,7 +1,6 @@
 /**
 Problem 3: Linear fold 
 */
-
 function forEach(array, callback,initialValue){
 	var previosValue = initialValue;
 
@@ -15,7 +14,6 @@ function forEach(array, callback,initialValue){
 /**
 Problem 5: Map 
 */
-
 function map (array, func) {
 	var newArray = [];
 
@@ -24,4 +22,29 @@ function map (array, func) {
 	}
 
 	return newArray;
+}
+
+/**
+Problem 6: Filter
+*/
+function select(array, filterCallback){
+	var newArray = [];
+
+	for (var i = 0; i < array.length; i++){
+		if (filterCallback(array[i])){
+			newArray.pop(array[i]);
+		}
+	}
+
+	return newArray;
+}
+
+/**
+Problem 7: Average of even numbers 
+*/
+function calculateAverage(array){
+	var sum = 0;
+	forEach(array, function(previosValue,currentValue,index, array){
+		sum += currentValue;
+	}, array[0]);
 }
