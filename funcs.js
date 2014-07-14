@@ -1,7 +1,7 @@
 /**
 Problem 3: Linear fold 
 */
-function forEach(array, callback,initialValue){
+function linearFold(array, callback,initialValue){
 	var previosValue = initialValue;
 
 	for (var index = 0; index <array.length; index++) {
@@ -18,7 +18,7 @@ function map (array, func) {
 	var newArray = [];
 
 	for (var i = 0; i < array.length; i++){
-		newArray.pop(func(array[i]));
+		newArray.push(func(array[i]));
 	}
 
 	return newArray;
@@ -27,12 +27,12 @@ function map (array, func) {
 /**
 Problem 6: Filter
 */
-function select(array, filterCallback){
+function filter(array, filterCallback){
 	var newArray = [];
 
 	for (var i = 0; i < array.length; i++){
 		if (filterCallback(array[i])){
-			newArray.pop(array[i]);
+			newArray.push(array[i]);
 		}
 	}
 
