@@ -57,16 +57,16 @@ function linearFold(array, callback,initialValue){
 /**
 Problem 4: Linear unfold 
 */
-function unfoldLinear(callback, initialValue) {
-    var results = new Array();
-    var state = initialValue;
+function unfold(callback, initialValue) {
+    var results = [];
+    var returnedArr = [];
 
-    do {
-        var callbackResult = callback(state);
-        state = callbackResult.state;
-        results.push(callbackResult.element);
-    } while (state);
-
+    while(initialValue) {
+        returnedArr = callback(initialValue);
+        results = returnedArr[0];
+        initialValue = returnedArr[1];
+    }
+    
     return results;
 };
 
