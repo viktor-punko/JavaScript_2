@@ -1,5 +1,23 @@
 'use strict';
 
+
+/**
+Problem 1: Partial Application
+Test:
+	var f = partialAplication(function(a, b){ return a + b;}, 6, 9);
+	var g = f();
+	g(); //15 = 6 + 9
+*/
+function partialAplication(func) {
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    return function() {
+        var allArgs = args.concat(Array.prototype.slice.call(arguments));
+        return func.apply(this, allArgs);
+    };
+};
+
+
 /**
 Problem 3: Linear fold 
 */
@@ -29,6 +47,7 @@ function map (array, func) {
 	return newArray;
 }
 
+
 /**
 Problem 6: Filter
 Test:
@@ -46,6 +65,7 @@ function filter(array, filterCallback){
 	return newArray;
 }
 
+
 /**
 Services sum function
 */
@@ -57,12 +77,14 @@ function sum(array){
 	return sum;
 };
 
+
 /**
 Problem 7: Average of even numbers
 */
 function calculateAverage(array){
 	return sum(array)/array.length;
 }
+
 
 /**
 Problem 8: Sum of random numbers 
@@ -100,6 +122,7 @@ function sumOfRandomNumbers(count){
 	return sum(generateRandomArray(count));
 }
 
+
 /**
 Problem 9: First 
 Test:
@@ -110,6 +133,7 @@ function first (array, conditionCallback) {
 	var filetedArray = filter(array, conditionCallback);
 	return (filetedArray.reverse()).slice(filetedArray.length - 1);
 }
+
 
 /**
 Problem 10: Lazy evaluation 
