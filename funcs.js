@@ -19,6 +19,29 @@ function partialAplication(func) {
 
 
 /**
+Problem 2: Currying
+*/
+function curry(func) {
+
+	var args = arguments, curryArgs = [];
+
+	if (typeof func !== 'function') {
+		throw new Error('The first arguments must be function!');
+	}
+
+	for (var i = 1; i < args.length; i++) {
+		curryArgs[i - 1] = args[i];
+	}
+
+	return function () {
+		// convert arguments to array
+		var argsArr = Array.prototype.slice.call(arguments, 0);    
+
+		curryArgs = curryArgs.concat(argsArr);
+		return func.apply(this, curryArgs);
+	}
+}
+/**
 Problem 3: Linear fold 
 */
 function linearFold(array, callback,initialValue){
@@ -113,8 +136,7 @@ function sumOfRandomNumbers(count){
 		return !isNaN(parseFloat(n)) && isFinite(n);
 	}
 
-	if (count < 0 && isNumber(count))
-	{
+	if (count < 0 && isNumber(count)){
 		return;
 	}
 	// copy paste from here: http://javascript.ru/Math.random
@@ -191,5 +213,5 @@ function memoization(Fun) {
             }
             return result;
         }
-    }
+    };
 }
