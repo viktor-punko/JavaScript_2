@@ -138,6 +138,12 @@ function first (array, conditionCallback) {
 /**
 Problem 10: Lazy evaluation 
 */
+function lazyEvaluation(lazyCallback){
+    var args = Array.prototype.slice.call(arguments, 1);
+    return function() {
+        return lazyCallback.apply(this, args);
+    };
+}
 
 
 /**
