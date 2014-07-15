@@ -110,3 +110,39 @@ function first (array, conditionCallback) {
 	var filetedArray = filter(array, conditionCallback);
 	return (filetedArray.reverse()).slice(filetedArray.length - 1);
 }
+
+/**
+Problem 10: Lazy evaluation 
+*/
+
+
+/**
+Problem 11: Memoization 
+*/
+function memoization(Fun) {
+    var cache = {};
+
+    return function (argument) {
+        if (!argument) {
+            return;
+        }
+        else {
+            var args = Array.prototype.slice.call(arguments);
+            var result;
+
+            var searchArgumentInCacheResult = first(cache, function(element){
+            	return element === argument;
+            });
+
+            if (searchArgumentInCacheResult.length > 0) {
+            	result = cache[argument];
+            }
+            else
+            {
+            	cache[argument] = Fun.apply(this, args);
+            	result = cache[argument];
+            }
+            return result;
+        }
+    }
+}
