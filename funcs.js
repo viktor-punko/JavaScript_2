@@ -32,6 +32,23 @@ function linearFold(array, callback,initialValue){
 
 
 /**
+Problem 4: Linear unfold 
+*/
+function unfoldLinear(callback, initialValue) {
+    var results = new Array();
+    var state = initialValue;
+
+    do {
+        var callbackResult = callback(state);
+        state = callbackResult.state;
+        results.push(callbackResult.element);
+    } while (state);
+
+    return results;
+};
+
+
+/**
 Problem 5: Map 
 Test:
 	a = [1,2,3];
