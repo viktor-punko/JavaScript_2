@@ -13,6 +13,9 @@ function linearFold(array, callback,initialValue){
 
 /**
 Problem 5: Map 
+Test:
+	a = [1,2,3];
+	map(a, function(e){ e = e + 45; return e;});
 */
 function map (array, func) {
 	var newArray = [];
@@ -26,6 +29,8 @@ function map (array, func) {
 
 /**
 Problem 6: Filter
+Test:
+	filter(a, function(e){ retrun e > 1;});
 */
 function filter(array, filterCallback){
 	var newArray = [];
@@ -44,7 +49,8 @@ Problem 7: Average of even numbers
 */
 function calculateAverage(array){
 	var sum = 0;
-	forEach(array, function(previosValue,currentValue,index, array){
+	linearFold(array, function(previosValue,currentValue,index, array){
 		sum += currentValue;
 	}, array[0]);
+	return sum;
 }
