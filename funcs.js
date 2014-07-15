@@ -99,3 +99,14 @@ function sumOfRandomNumbers(count){
 
 	return sum(generateRandomArray(count));
 }
+
+/**
+Problem 9: First 
+Test:
+	[1, 2, 3];
+	first(a, function(e){return e >1;});
+*/
+function first (array, conditionCallback) {
+	var filetedArray = filter(array, conditionCallback);
+	return (filetedArray.reverse()).slice(filetedArray.length - 1);
+}
