@@ -3,6 +3,7 @@ function FunctionManager (argument) {
 	'use strict';
 
 
+	var self = this;
 	/**
 	Problem 1: Partial Application
 	Test:
@@ -29,31 +30,21 @@ function FunctionManager (argument) {
 	*/
 	this.curry = function (func) {
 
+		var args = arguments, curryArgs = [];
+ 
 		if (typeof func !== 'function') {
 			throw new Error('The first arguments must be function!');
 		}
 
-		//http://lonelyproton.com/2014/06/Currying-in-JavaScript/
-		var curryRecursiveGenerator = function (f, countArgs, args, context) {
-			if (countArgs === 1){
-				var functionFromSingleArgument = function (singleArgument){
-					args.push(singleArgument);
-					return f.apply(context, args);
-				}
-				return functionFromSingleArgument;
-			} else {
-				return function (oneArg){
-					args.push(oneArg);
-					return curryRecursiveGenerator(f, countArgs - 1, args, context);
-				}
-			}
-		}
-
-		return function (func) {
-			var curryNextLevelOrEnded =  curryRecursiveGenerator(func, func.length, [], this);
-			return curryNextLevelOrEnded;
-		}
-	};
+	 	curryArgs = Array.prototype.slice.call(arguments, 1);
+ 
+	 	return function () {
+	 		var argsArr = Array.prototype.slice.call(arguments, 0);    
+	 
+	 		curryArgs = curryArgs.concat(argsArr);
+	 		return func.apply(this, curryArgs);
+	 	}
+ 	};
 
 
 	/**
@@ -94,7 +85,7 @@ function FunctionManager (argument) {
 	/**
 	Problem 5: Map 
 	Test:
-		a = [1,2,3];
+		var a = [1,2,3];
 		map(a, function(e){ e = e + 45; return e;});
 	*/
 	this.map = function (array, func) {
@@ -129,11 +120,12 @@ function FunctionManager (argument) {
 	/**
 	Services sum function
 	*/
-	function sum(array){
+	this.sumArray = function (array){
 		var sum = 0;
-		linearFold(array, function(previosValue,currentValue,index, array){
+		this.linearFold(array, function(previosValue,currentValue,index, array){
 			sum += currentValue;
 		}, array[0]);
+
 		return sum;
 	};
 
@@ -142,7 +134,7 @@ function FunctionManager (argument) {
 	Problem 7: Average of even numbers
 	*/
 	this.calculateAverage = function (array){
-		return sum(array)/array.length;
+		return this.sumArray(array)/array.length;
 	};
 
 
@@ -178,7 +170,8 @@ function FunctionManager (argument) {
 			return randomArray;
 		};
 
-		return sum(generateRandomArray(count));
+		var randomArr = generateRandomArray(count);
+		return this.sumArray(randomArr);
 	};
 
 
@@ -189,7 +182,7 @@ function FunctionManager (argument) {
 		first(a, function(e){return e >1;});
 	*/
 	this.first = function (array, conditionCallback) {
-		var filetedArray = filter(array, conditionCallback);
+		var filetedArray = this.filter(array, conditionCallback);
 		return (filetedArray.reverse()).slice(filetedArray.length - 1);
 	};
 
@@ -219,7 +212,7 @@ function FunctionManager (argument) {
             var args = Array.prototype.slice.call(arguments);
             var result;
 
-            var searchArgumentInCacheResult = first(cache, function(element){
+            var searchArgumentInCacheResult = self.first(cache, function(element){
             	return element === argument;
             });
 
