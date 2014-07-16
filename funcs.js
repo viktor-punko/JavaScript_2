@@ -29,22 +29,29 @@ function FunctionManager (argument) {
 	*/
 	this.curry = function (func) {
 
-		var args = arguments, curryArgs = [];
-
 		if (typeof func !== 'function') {
 			throw new Error('The first arguments must be function!');
 		}
 
-		for (var i = 1; i < args.length; i++) {
-			curryArgs[i - 1] = args[i];
+		//http://lonelyproton.com/2014/06/Currying-in-JavaScript/
+		var curryRecursiveGenerator = function (f, countArgs, args, context) {
+			if (countArgs === 1){
+				var functionFromSingleArgument = function (singleArgument){
+					args.push(singleArgument);
+					return f.apply(context, args);
+				}
+				return functionFromSingleArgument;
+			} else {
+				return function (oneArg){
+					args.push(oneArg);
+					return curryRecursiveGenerator(f, countArgs - 1, args, context);
+				}
+			}
 		}
 
-		return function () {
-			// convert arguments to array
-			var argsArr = Array.prototype.slice.call(arguments, 0);    
-
-			curryArgs = curryArgs.concat(argsArr);
-			return func.apply(this, curryArgs);
+		return function (func) {
+			var curryNextLevelOrEnded =  curryRecursiveGenerator(func, func.length, [], this);
+			return curryNextLevelOrEnded;
 		}
 	};
 
@@ -55,7 +62,7 @@ function FunctionManager (argument) {
 		var numbers = [1,2,3];
 		linearFold(numbers, function(pr, curV,i, arr){return curV + 23;}, 3);
 	*/
-	this.linearFold = function (array, callback,initialValue){
+	this.linearFold = function (array, callback, initialValue){
 		var previosValue = initialValue;
 
 		for (var index = 0; index <array.length; index++) {
@@ -201,31 +208,30 @@ function FunctionManager (argument) {
 	/**
 	Problem 11: Memoization 
 	*/
-	this.memoization = function (Fun) {
+	this.memoization = function (callback) {
 	    var cache = {};
 
 	    return function (argument) {
 	        if (!argument) {
 	            return;
 	        }
-	        else {
-	            var args = Array.prototype.slice.call(arguments);
-	            var result;
+	        
+            var args = Array.prototype.slice.call(arguments);
+            var result;
 
-	            var searchArgumentInCacheResult = first(cache, function(element){
-	            	return element === argument;
-	            });
+            var searchArgumentInCacheResult = first(cache, function(element){
+            	return element === argument;
+            });
 
-	            if (searchArgumentInCacheResult.length > 0) {
-	            	result = cache[argument];
-	            }
-	            else
-	            {
-	            	cache[argument] = Fun.apply(this, args);
-	            	result = cache[argument];
-	            }
-	            return result;
-	        }
+            if (searchArgumentInCacheResult.length > 0) {
+            	result = cache[argument];
+            }
+            else
+            {
+            	cache[argument] = callback.apply(this, args);
+            	result = cache[argument];
+            }
+            return result;
 	    };
 	};
 
